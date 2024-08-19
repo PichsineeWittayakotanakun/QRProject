@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     rowGap: 16,
+    alignItems: 'center',
   },
   actionContainer: {
     rowGap: 24,
