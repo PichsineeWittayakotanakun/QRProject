@@ -29,6 +29,7 @@ const ScanScreen = () => {
   const navigation = useNavigation();
   const [isCameraVisible, setIsCameraVisible] = useState<boolean>(false);
   const isFocused = useIsFocused();
+  const [tempHideCamera, setTempHideCamera] = useState<boolean>(false);
 
   const [torch, setTorch] = useState<boolean>(false);
   const toggleFlash = () => {
@@ -95,9 +96,7 @@ const ScanScreen = () => {
     Alert.alert(title, 'Please try again', [
       {
         text: 'OK',
-        onPress: () => {
-          navigation.goBack();
-        },
+        onPress: () => {},
       },
     ]);
 
@@ -106,7 +105,7 @@ const ScanScreen = () => {
       {
         text: 'OK',
         onPress: () => {
-          navigation.goBack();
+          setTempHideCamera(false);
         },
       },
     ]);
@@ -118,6 +117,7 @@ const ScanScreen = () => {
     }
 
     const value = codes[0]?.value;
+    setTempHideCamera(true);
     codeScannedSuccess(value);
   };
 
@@ -158,8 +158,8 @@ const ScanScreen = () => {
 
   return (
     <View style={styles.contianer}>
-      {device && isCameraVisible && (
-        <>
+      {device && isCameraVisible && !tempHideCamera && (
+        <View style={styles.contianer}>
           <Camera
             style={styles.contianer}
             onError={onCameraError}
@@ -170,21 +170,21 @@ const ScanScreen = () => {
           />
           <View style={styles.flashContainer}>
             <TouchableOpacity
-              style={styles.buttonButton}
+              style={styles.buttomButton}
               onPress={() => toggleFlash()}>
               <FlashIcon />
             </TouchableOpacity>
-            <Text>Flash</Text>
+            <Text style={styles.buttomText}>Flash</Text>
           </View>
           <View style={styles.uploadContainer}>
             <TouchableOpacity
-              style={styles.buttonButton}
+              style={styles.buttomButton}
               onPress={() => openGallery()}>
               <CameraRollIcon />
             </TouchableOpacity>
-            <Text>Upload Photo</Text>
+            <Text style={styles.buttomText}>Upload Photo</Text>
           </View>
-        </>
+        </View>
       )}
     </View>
   );
@@ -210,12 +210,15 @@ const styles = StyleSheet.create({
     rowGap: 8,
     alignItems: 'center',
   },
-  buttonButton: {
+  buttomButton: {
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: colors.white,
     borderWidth: 1,
     padding: 12,
+  },
+  buttomText: {
+    color: colors.white,
   },
 });
