@@ -10,3 +10,4 @@ features for create QR code and decode QR code from in app camera or pick image 
 
 ## Demo
 please check on file: /src/assets/video
+-remark: only test on Android-
